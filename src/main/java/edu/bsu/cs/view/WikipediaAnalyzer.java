@@ -35,6 +35,9 @@ public final class WikipediaAnalyzer extends VBox {
     @Inject
     private ExecutorService executor;
 
+    @Inject
+    private RevisionInterface formatter;
+
     public WikipediaAnalyzer() {
         queryButton.setOnAction(e -> attemptQuery());
         titleField.setOnAction(e -> attemptQuery());
@@ -58,7 +61,7 @@ public final class WikipediaAnalyzer extends VBox {
     private void runQuery(String articleTitle) {
         try {
             QueryResponse response = engine.queryRevisions(articleTitle);
-            RevisionFormatter formatter = new RevisionFormatter();
+            //RevisionFormatter formatter = new RevisionFormatter();
             StringBuilder stringBuilder = new StringBuilder();
             for (Revision revision : response.revisions()) {
                 String message = formatter.format(revision);

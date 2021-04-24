@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
+import edu.bsu.cs.model.Revision;
 import edu.bsu.cs.view.WikipediaAnalyzer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -27,10 +28,7 @@ public final class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Injector injector = Guice.createInjector(
-                new QueryEngineModule(),
-                executorServiceModule
-        );
+        Injector injector = Guice.createInjector(new QueryEngineModule(), new RevisionModule(), executorServiceModule);
         WikipediaAnalyzer analyzer = injector.getInstance(WikipediaAnalyzer.class);
 
         primaryStage.setScene(new Scene(analyzer));
@@ -47,7 +45,6 @@ public final class App extends Application {
         // done below) so that the application will terminate gracefully.
 
         executorService.shutdown();
-        //noinspection ResultOfMethodCallIgnored
         executorService.awaitTermination(10, TimeUnit.SECONDS);
         executorService.shutdownNow();
     }
